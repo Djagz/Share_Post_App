@@ -1,0 +1,173 @@
+<!--The content below is only a placeholder and can be replaced.-->
+<div style="text-align:center">
+  <h1>
+    Welcome to {{ title }}!  <!--Interpolation !-->
+  </h1>
+<h3>AppComponent</h3>
+   {{tasks | json}}
+
+<h5>TaskComponent</h5>
+  <app-task [myTasks] = 'tasks' [taskArray] = 'myArray' (myEvent) = 'dataFromChild($event)'></app-task> 
+
+
+  <!--Interpolating the attribute and giving the currency filter !-->
+  <p>{{x | currency: 'yen'}}</p> 
+  <p>{{y}}</p>
+  <!--Interpolating the attribute and giving the uppercase filter !-->
+  <p>{{myStr | uppercase}}</p>
+  <!--Interpolating the attribute and giving the json filter !-->
+  <p>{{user | json}}</p>
+  <!--Interpolating the attribute and giving the lowercase filter !-->
+  <p>{{user.lastName | lowercase}}</p>
+  <!--Interpolating the attribute and giving the date filter !-->
+  <p>{{today | date:'fullDate'}}</p>
+  <p>{{today | date:'longDate'}}</p>
+  <p>{{today | date:'shortDate'}}</p>
+
+  <!--Binding the value to attribute x in app.component.ts  !-->
+  <input type = "text" [value] = "x">
+  <!--Binding the value to x which is not an attribute but a character !-->
+  <input type = "text" value = "x">
+
+<!--Interpolating the attribute and giving the time filter !-->
+  <p>{{today | date:'mediumTime'}}</p>
+  <p>{{today | date:'shortTime'}}</p>
+  <p>{{today | date:'longTime'}}</p>
+  <p>{{today | date:'fullTime'}}</p>
+</div>
+
+<!--Structural Directives !-->
+<!--Binding the *ngIf to myBoolean attribute defined in the app.component.ts !-->
+<h3 *ngIf = 'myBoolean'> Show This Value</h3>
+<!--Can set *ngIf static to a boolean value as well !-->
+<h3 *ngIf = '1!==1'> Show This Value</h3>
+
+<!--Binding a click event to the method onButtonClick defined in app.component.ts !-->
+<button (click) = "onButtonClick($event)">Click Me!</button>
+
+<!-- *ngFor runs like a for loop but because of Angular it binds with the array defined in app.component.ts !-->
+<ul>
+  <li *ngFor = "let num of myArray; let idx = index of myArray">
+  Value is {{num}}
+  Index is {{idx}}
+</li>
+  </ul>
+
+<!--Attribute Directives (styling) !-->
+<!--Binding the [ngStyle] attribute with the embedded styling properties!-->
+  <h2 [ngStyle] = "{
+  'background-color': 'red',
+  'font-weight': 'bold'
+}">
+Using ngStyle
+  </h2>
+
+<br/>
+
+<!--Binding the [ngClass] attribute to the classes made in the css file!-->
+  <h2 [ngClass] = "{
+  'green': true,
+  'bold': true
+}">
+Using ngClass
+  </h2>
+
+<!--Binding the [ngClass] attribute to the class "on" made in css file and binding that class with another attribute inside app.component.ts file which holds a boolean value!-->
+  <h2 [ngClass] = "{
+  'on': switch
+}">
+I should be yellow
+  </h2>
+
+<!--Component Events !-->
+<!--Binding submit event with the onSubmit method inside app.component.ts file !-->
+<!--onSubmit method console logs the user details when filled and submited and after that it creates a new instance of that user with empty values to the keys of that user !-->
+
+<!-- [(ngModel)] binds with email property of the user and that binded value is stored in another attribute email followed by #. In this way we can do data validation !-->
+  <form (submit) = "onSubmit()">
+    First Name: <input type = "text" name = "firstName" [(ngModel)] = "myUser.firstName">
+    Last Name: <input type = "text" name = "lastName" [(ngModel)] = "myUser.lastName">
+    email: <input 
+    type = "text"
+    name = "email"
+    required
+    minlength = "4"
+    maxlength = "25"    
+    [(ngModel)] = "myUser.email"
+    #email = "ngModel">
+    <input type = "submit">
+  </form>
+
+<!--Data validation done by using the attribute which stores the binded value !-->
+  {{email.errors | json}}
+  {{email.valid | json}}
+
+  <div *ngIf = '!email.valid' >
+    Sorry! email is not valid
+  </div>
+
+  {{myUser | json}}
+
+
+<!--Again an example of the component event and data vakidation !-->
+
+  <form (submit)="submit()"
+  #formData = 'ngForm'>
+  Email: <input 
+    type="text" 
+    name="email" 
+    required 
+    minlength="4" 
+    maxlength="24"
+    [(ngModel)]="people.email"
+    #email='ngModel'
+  />
+  First Name<input 
+    type="text" 
+    name="first_name" 
+    required 
+    minlength="4" 
+    maxlength="24"
+    [(ngModel)]="people.first_name"
+    #first_name='ngModel'
+  />
+  Last Name<input 
+    type="text" 
+    name="last_name" 
+    required 
+    minlength="4" 
+    maxlength="24"
+    [(ngModel)]="people.last_name"
+    #last_name='ngModel'
+  />
+  Password<input 
+    type="text" 
+    name="password" 
+    required 
+    minlength="10" 
+    maxlength="24"
+    pattern="^([a-zA-Z0-9@*#]{8,15})$"
+    [(ngModel)]="people.password"
+    #password='ngModel'
+  />
+  <input type="submit">
+</form>
+
+{{peopleArr | json}}
+
+
+  <!--<img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
+</div>
+<h2>Here are some links to help you start: </h2>
+<ul>
+  <li>
+    <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
+  </li>
+  <li>
+    <h2><a target="_blank" rel="noopener" href="https://github.com/angular/angular-cli/wiki">CLI Documentation</a></h2>
+  </li>
+  <li>
+    <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
+  </li>
+</ul>!-->
+
